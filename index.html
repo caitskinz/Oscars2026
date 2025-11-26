@@ -1,338 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <title>🎬Oscars Picks🎬</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
+  <meta charset="UTF-8" />
+  <title>🎬Oscars Picks🎬</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
     body {
-    background-color: black;
-    font-family: Arial, Helvetica, sans-serif;
-}
+      background-color: black;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-main {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+    main {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-h1 {
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    color: white;
-}
+    h1 {
+      display: flex;
+      text-align: center;
+      justify-content: center;
+      color: white;
+    }
 
-form {
-    background-color: white;
-    padding: 25px;
-    margin: auto;
-    border-radius: 5px;
-    border: 2px solid #c19d53;
-    width: 70%;
-    justify-items: center;
-    box-shadow: 0px 0px 20px #c19d53;
+    form {
+      background-color: white;
+      padding: 25px;
+      margin: auto;
+      border-radius: 5px;
+      border: 2px solid #c19d53;
+      width: 70%;
+      justify-items: center;
+      box-shadow: 0px 0px 20px #c19d53;
+    }
 
-}
+    input {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 30px;
+      margin: auto;
+      border-radius: 5px;
+      border: 1px solid #c19d53;
+    }
 
-input {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 30px;
-    margin: auto;
-    border-radius: 5px;
-    border: 1px solid #c19d53; 
-}
+    select {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 35px;
+      margin: auto;
+      border-radius: 5px;
+      border: 1px solid #c19d53;
+    }
 
-select {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 35px;
-    margin: auto;
-    border-radius: 5px;
-    border: 1px solid #c19d53;
-}
- .category {
-    margin-bottom: 7px;
-    margin-top: 0;
-    font-size: 1.1rem;
-    border-bottom: 1px solid #c19d53;
-    padding-bottom: 3px;
- }
+    .category {
+      margin-bottom: 7px;
+      margin-top: 0;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #c19d53;
+      padding-bottom: 3px;
+    }
 
-button {
-    width: 100%;
-    height: 50px;
-    border-radius: 5px;
-    font-weight: bold;
-    border: solid 2px #c19d53;
-    background: linear-gradient(
-    145deg,
-    #E0aa3e 0%,
-    #f9f295 40%,
-    #E0aa3e 80%,
-    #b88a44 100%
-    );
-}
+    button {
+      width: 100%;
+      height: 50px;
+      border-radius: 5px;
+      font-weight: bold;
+      border: solid 2px #c19d53;
+      background: linear-gradient(
+        145deg,
+        #e0aa3e 0%,
+        #f9f295 40%,
+        #e0aa3e 80%,
+        #b88a44 100%
+      );
+    }
 
-button:active {
-    background: #000000;
-    color:#c19d53;
-}
+    button:active {
+      background: #000000;
+      color: #c19d53;
+    }
 
-/* modal styles */
+    /* modal styles */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none; /* hidden by default */
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
 
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: none;/* hidden by default */
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
+    .modal {
+      color: white;
+      background: black;
+      padding: 1.5rem 2rem;
+      border: 2px solid #c19d53;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
 
-.modal {
-    color: white;
-    background: black;
-    padding: 1.5rem 2rem;
-    border: 2px solid #c19d53;
-    border-radius: 8px;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
+    .modal button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      border: solid 1px black;
+      cursor: pointer;
+    }
 
-.modal button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    border: solid 1px black;
-}
-
-.modal button:active {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    border: solid 1px black;
-    background-color: #c19d53;
-}
-    </style>
+    .modal button:active {
+      background-color: #c19d53;
+    }
+  </style>
 </head>
 
 <body>
-    <main>
+  <main>
     <header>
-    <h1>🎬Oscars Picks🎬</h1>
+      <h1>🎬Oscars Picks🎬</h1>
     </header>
+
     <form id="picks-form">
-        <label for="name">
-      <p class="category">Your name</p>
-      <input type="text" name="name" required placeholder="who are u?"/>
-    </label>
-        <br />
-        </div>
+      <label for="name">
+        <p class="category">Your name</p>
+        <input type="text" name="name" required placeholder="who are u?" />
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Picture</p>
-      <select name="bestPicture" required />
-      <option value="">Select...</option>
-      <option value="Placeholder 1">Placeholder 1</option>
-      <option vlaue="Placeholder 2">Placeholder 2</option>
-      <option vlaue="Placeholder 3">Placeholder 3</option>
-      <option vlaue="Placeholder 4">Placeholder 4</option>
-      <option value="Placeholder 5">Placeholder 5</option>
-      <option vlaue="Placeholder 6">Placeholder 6</option>
-      <option vlaue="Placeholder 7">Placeholder 7</option>
-      <option vlaue="Placeholder 8">Placeholder 8</option>
-      <option vlaue="Placeholder 9">Placeholder 9</option>
-      <option vlaue="Placeholder 10">Placeholder 10</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Picture</p>
+        <select name="bestPicture" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+          <option value="Placeholder 6">Placeholder 6</option>
+          <option value="Placeholder 7">Placeholder 7</option>
+          <option value="Placeholder 8">Placeholder 8</option>
+          <option value="Placeholder 9">Placeholder 9</option>
+          <option value="Placeholder 10">Placeholder 10</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Actor</p>
-      <select name="bestActor" required />
-      <option value="">Select...</option>
-      <option value="Placeholder 1">Placeholder 1</option>
-      <option vlaue="Placeholder 2">Placeholder 2</option>
-      <option vlaue="Placeholder 3">Placeholder 3</option>
-      <option vlaue="Placeholder 4">Placeholder 4</option>
-      <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Actor</p>
+        <select name="bestActor" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Actress</p>
-      <select name="bestActress" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Actress</p>
+        <select name="bestActress" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Director</p>
-      <select name="bestDirector" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Director</p>
+        <select name="bestDirector" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Supporting Actor</p>
-      <select name="bestSupportingActor" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Supporting Actor</p>
+        <select name="bestSupportingActor" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Supporting Actress</p>
-      <select name="bestSupportingActress" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Supporting Actress</p>
+        <select name="bestSupportingActress" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Animated Feature</p>
-      <select name="bestAnimated" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Animated Feature</p>
+        <select name="bestAnimated" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Cinematography</p>
-      <select name="bestCinematography" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Cinematography</p>
+        <select name="bestCinematography" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Costume Design</p>
-      <select name="bestCostume" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Costume Design</p>
+        <select name="bestCostume" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best International Feature Film</p>
-      <select name="bestInternational" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best International Feature Film</p>
+        <select name="bestInternational" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <label>
-      <p class="category">Best Original Score</p>
-      <select name="bestScore" required />
-        <option value="">Select...</option>
-        <option value="Placeholder 1">Placeholder 1</option>
-        <option vlaue="Placeholder 2">Placeholder 2</option>
-        <option vlaue="Placeholder 3">Placeholder 3</option>
-        <option vlaue="Placeholder 4">Placeholder 4</option>
-        <option value="Placeholder 5">Placeholder 5</option>
-      </select>
-    </label>
-        <br />
+      <label>
+        <p class="category">Best Original Score</p>
+        <select name="bestScore" required>
+          <option value="">Select...</option>
+          <option value="Placeholder 1">Placeholder 1</option>
+          <option value="Placeholder 2">Placeholder 2</option>
+          <option value="Placeholder 3">Placeholder 3</option>
+          <option value="Placeholder 4">Placeholder 4</option>
+          <option value="Placeholder 5">Placeholder 5</option>
+        </select>
+      </label>
+      <br />
 
-        <button type="submit">LOCK IT IN</button>
+      <button type="submit">LOCK IT IN</button>
     </form>
 
     <p id="status"></p>
-    </main>
-    <div id="thankyou-backdrop" class="modal-backdrop">
+  </main>
+
+  <!-- Modal -->
+  <div id="thankyou-backdrop" class="modal-backdrop">
     <div class="modal">
       <h2>Thank you for your submission! 🎬</h2>
       <p>Your picks have been recorded.</p>
       <button id="close-modal-btn">Close</button>
     </div>
   </div>
-    <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbw8R7y95iEDbU1iHn4guVPOatcNiSb7CAyRBJ2UklOykEy5-9WqD2wa5JfVcHUITJarnw/exec";
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw8R7y95iEDbU1iHn4guVPOatcNiSb7CAyRBJ2UklOykEy5-9WqD2wa5JfVcHUITJarnw/exec";
     const form = document.getElementById("picks-form");
     const statusEl = document.getElementById("status");
+
+    const backdrop = document.getElementById("thankyou-backdrop");
+    const closeModalBtn = document.getElementById("close-modal-btn");
+
+    function openModal() {
+      backdrop.style.display = "flex";
+    }
+
+    function closeModal() {
+      backdrop.style.display = "none";
+    }
+
+    closeModalBtn.addEventListener("click", closeModal);
+
+    // Close modal if user clicks outside the modal content
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) {
+        closeModal();
+      }
+    });
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       statusEl.textContent = "Submitting...";
 
-      // Turn form into URL-encoded data
       const formData = new FormData(form);
       const body = new URLSearchParams(formData);
 
       try {
         const response = await fetch(scriptURL, {
           method: "POST",
-          body: body, // will be sent as application/x-www-form-urlencoded
+          body: body,
         });
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
 
-        statusEl.textContent = "Thanks! Your picks have been recorded.";
+        statusEl.textContent = "";
         form.reset();
-        openModal();
+        openModal(); // show modal on success
       } catch (err) {
         console.error(err);
         statusEl.textContent = "Oops, something went wrong. Try again?";
       }
     });
-    </script>
+  </script>
 </body>
-
 </html>
