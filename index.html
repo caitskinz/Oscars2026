@@ -145,6 +145,69 @@
     font-size: 1.1rem;
   }
 }
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  margin: 1.5rem 0;
+}
+
+.podium-spot {
+  width: 100px;
+  background: linear-gradient(
+    145deg,
+    #e0aa3e 0%,
+    #f9f295 40%,
+    #e0aa3e 80%,
+    #b88a44 100%
+  );
+  border: 2px solid #c19d53;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+  padding: 0.5rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.podium-spot.first {
+  height: 160px;
+}
+
+.podium-spot.second {
+  height: 120px;
+}
+
+.podium-spot.third {
+  height: 100px;
+}
+
+.medal {
+  font-size: 1.6rem;
+}
+
+.name {
+  font-weight: bold;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+  color: black;
+}
+
+.score {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  color: black;
+}
+
+@media (max-width: 480px) {
+  .podium {
+    gap: 6px;
+  }
+
+  .podium-spot {
+    width: 85px;
+  }
+}
+
 
   </style>
 </head>
@@ -450,93 +513,225 @@
     <h2>How does this work? 🎬</h2>
     <p>
       <b>Step 1:</b> Enter your name<br>
-      <b>Step 2:</b> For each category, pick one with your brain 🧠 (the one you think is most likely to win) and one with your heart 💖 (the one you <b>want</b> to win)</b><br>
+      <b>Step 2:</b> For each category, pick one with your brain 🧠 (the one you think is most likely to win) and one with your heart 💖 (the one you <b>want</b> to win)<br>
       <b>Step 3:</b> Hit “LOCK IT IN” once you’re done<br>
       ✨ Last day to submit is <b>Sunday 15 March</b> ✨
-    <h2>How do the points work? 🤔</h2>
-    <p>🧠 Brain Choice Correct = 2 Points<br>
-        💖 Heart Choice Correct = 1 Point
     </p>
+
+    <h2>How do the points work? 🤔</h2>
+    <p>
+      🧠 Brain Choice Correct = 2 Points<br>
+      💖 Heart Choice Correct = 1 Point
+    </p>
+
     <h2>JUST SO YOU KNOW!!!</h2>
-    <p>You can only submit this form once, so make sure you're ready to make all your choices before you submit.</p>
+    <p>
+      You can only submit this form once, so make sure you're ready to make all your choices before you submit.
+    </p>
+
     <button id="close-instructions-btn">Let’s goooooo</button>
   </div>
 </div>
 
+<div id="top3-backdrop" class="modal-backdrop">
+  <div class="modal">
+    <h2>and the winner is.....🏆</h2>
+
+    <div class="podium">
+      <div class="podium-spot second">
+        <div class="medal">🥈</div>
+        <div class="name" id="second-name"></div>
+        <div class="score" id="second-score"></div>
+      </div>
+
+      <div class="podium-spot first">
+        <div class="medal">🥇</div>
+        <div class="name" id="first-name"></div>
+        <div class="score" id="first-score"></div>
+      </div>
+
+      <div class="podium-spot third">
+        <div class="medal">🥉</div>
+        <div class="name" id="third-name"></div>
+        <div class="score" id="third-score"></div>
+      </div>
+    </div>
+
+    <button id="close-top3-btn">slay 💅</button>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbyaAepkqfk5IKphx8bY7weBfFg8UNqBoghXAR_e9_YG2P5-itvxvVCSozw-1eXvJA9cWA/exec";
-    const form = document.getElementById("picks-form");
-    const statusEl = document.getElementById("status");
+    // ====== CONFIG ======
+const scriptURL =
+  "https://script.google.com/macros/s/AKfycbyiJkCCnU-cq1pIYfZthMUexZBr9tVeATfGvq0lUjIeI3Gkvt9lCMEXINYYmp3C-MrN/exec";
 
-    const backdrop = document.getElementById("thankyou-backdrop");
-    const closeModalBtn = document.getElementById("close-modal-btn");
+// ====== ELEMENTS ======
+const form = document.getElementById("picks-form");
+const statusEl = document.getElementById("status");
 
-    function openModal() {
-      backdrop.style.display = "flex";
-    }
+// Thank-you modal
+const thankyouBackdrop = document.getElementById("thankyou-backdrop");
+const closeThankyouBtn = document.getElementById("close-modal-btn");
 
-    function closeModal() {
-      backdrop.style.display = "none";
-    }
-
-    closeModalBtn.addEventListener("click", closeModal);
-
-    // Close modal if user clicks outside the modal content
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) {
-        closeModal();
-      }
-    });
-
-    const instructionsBackdrop = document.getElementById("instructions-backdrop");
+// Instructions modal
+const instructionsBackdrop = document.getElementById("instructions-backdrop");
 const closeInstructionsBtn = document.getElementById("close-instructions-btn");
+
+// Top 3 podium modal
+const top3Backdrop = document.getElementById("top3-backdrop");
+const closeTop3Btn = document.getElementById("close-top3-btn");
+
+// ====== MODAL HELPERS ======
+function openThankyou() {
+  thankyouBackdrop.style.display = "flex";
+}
+function closeThankyou() {
+  thankyouBackdrop.style.display = "none";
+}
 
 function openInstructions() {
   instructionsBackdrop.style.display = "flex";
 }
-
 function closeInstructions() {
   instructionsBackdrop.style.display = "none";
 }
 
-closeInstructionsBtn.addEventListener("click", closeInstructions);
+function openTop3() {
+  top3Backdrop.style.display = "flex";
+  fireConfetti();
+}
 
+function closeTop3() {
+  top3Backdrop.style.display = "none";
+}
+
+function fireConfetti() {
+  const duration = 2.5 * 1000;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 6,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ["#f9f295", "#e0aa3e", "#c19d53", "#ffffff"]
+    });
+
+    confetti({
+      particleCount: 6,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ["#f9f295", "#e0aa3e", "#c19d53", "#ffffff"]
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}
+
+
+// ====== MODAL EVENTS ======
+closeThankyouBtn.addEventListener("click", closeThankyou);
+thankyouBackdrop.addEventListener("click", (e) => {
+  if (e.target === thankyouBackdrop) closeThankyou();
+});
+
+closeInstructionsBtn.addEventListener("click", closeInstructions);
 instructionsBackdrop.addEventListener("click", (e) => {
   if (e.target === instructionsBackdrop) closeInstructions();
 });
 
-// Show instructions when the page loads
-window.addEventListener("load", () => {
-  openInstructions();
+closeTop3Btn.addEventListener("click", closeTop3);
+top3Backdrop.addEventListener("click", (e) => {
+  if (e.target === top3Backdrop) closeTop3();
+});
+
+// ====== PODIUM RENDERING ======
+function renderPodium(top3) {
+  // expected: [{name:"...", score: 12}, {..}, {..}]
+  const slots = [
+    { slot: "first", data: top3?.[0] },
+    { slot: "second", data: top3?.[1] },
+    { slot: "third", data: top3?.[2] },
+  ];
+
+  slots.forEach(({ slot, data }) => {
+    const nameEl = document.getElementById(`${slot}-name`);
+    const scoreEl = document.getElementById(`${slot}-score`);
+
+    if (!nameEl || !scoreEl) return;
+
+    if (data) {
+      nameEl.textContent = data.name ?? "—";
+      // Your sheet "Score" is weighted points, so call them points:
+      scoreEl.textContent =
+        typeof data.score === "number"
+          ? `${data.score} points`
+          : `${data.score ?? 0} points`;
+    } else {
+      nameEl.textContent = "—";
+      scoreEl.textContent = "";
+    }
+  });
+}
+
+// ====== FETCH TOP 3 (from Apps Script doGet?action=top3) ======
+async function checkTop3() {
+  try {
+    const res = await fetch(`${scriptURL}?action=top3`, { method: "GET" });
+    const data = await res.json();
+
+    if (!data?.published) return false;
+    if (!Array.isArray(data.top3)) return false;
+
+    renderPodium(data.top3);
+    openTop3();
+    return true;
+  } catch (err) {
+    console.error("Failed to load top 3", err);
+    return false;
+  }
+}
+
+// ====== FORM SUBMIT (POST to Apps Script) ======
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  statusEl.textContent = "Submitting...";
+
+  const formData = new FormData(form);
+  const body = new URLSearchParams(formData);
+
+  try {
+    const response = await fetch(scriptURL, {
+      method: "POST",
+      body: body,
+    });
+
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    statusEl.textContent = "";
+    form.reset();
+    openThankyou();
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = "Oops, something went wrong. Try again?";
+  }
+});
+
+// ====== ON PAGE LOAD ======
+window.addEventListener("load", async () => {
+  const winnersShown = await checkTop3();
+  if (!winnersShown) openInstructions();
 });
 
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      statusEl.textContent = "Submitting...";
-
-      const formData = new FormData(form);
-      const body = new URLSearchParams(formData);
-
-      try {
-        const response = await fetch(scriptURL, {
-          method: "POST",
-          body: body,
-        });
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        statusEl.textContent = "";
-        form.reset();
-        openModal(); // show modal on success
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent = "Oops, something went wrong. Try again?";
-      }
-    });
   </script>
 </body>
 </html>
