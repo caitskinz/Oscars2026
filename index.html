@@ -444,6 +444,26 @@
     </div>
   </div>
 
+  <!-- Instructions Modal -->
+<div id="instructions-backdrop" class="modal-backdrop">
+  <div class="modal">
+    <h2>How does this work? 🎬</h2>
+    <p>
+      <b>Step 1:</b> Enter your name<br>
+      <b>Step 2:</b> For each category, pick one with your brain 🧠 (the one you think is most likely to win) and one with your heart 💖 (the one you <b>want</b> to win)</b><br>
+      <b>Step 3:</b> Hit “LOCK IT IN” once you’re done<br>
+      ✨ Last day to submit is <b>Sunday 15 March</b> ✨
+    <h2>How do the points work? 🤔</h2>
+    <p>🧠 Brain Choice Correct = 2 Points<br>
+        💖 Heart Choice Correct = 1 Point
+    </p>
+    <h2>JUST SO YOU KNOW!!!</h2>
+    <p>You can only submit this form once, so make sure you're ready to make all your choices before you submit.</p>
+    <button id="close-instructions-btn">Let’s goooooo</button>
+  </div>
+</div>
+
+
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbyaAepkqfk5IKphx8bY7weBfFg8UNqBoghXAR_e9_YG2P5-itvxvVCSozw-1eXvJA9cWA/exec";
     const form = document.getElementById("picks-form");
@@ -468,6 +488,29 @@
         closeModal();
       }
     });
+
+    const instructionsBackdrop = document.getElementById("instructions-backdrop");
+const closeInstructionsBtn = document.getElementById("close-instructions-btn");
+
+function openInstructions() {
+  instructionsBackdrop.style.display = "flex";
+}
+
+function closeInstructions() {
+  instructionsBackdrop.style.display = "none";
+}
+
+closeInstructionsBtn.addEventListener("click", closeInstructions);
+
+instructionsBackdrop.addEventListener("click", (e) => {
+  if (e.target === instructionsBackdrop) closeInstructions();
+});
+
+// Show instructions when the page loads
+window.addEventListener("load", () => {
+  openInstructions();
+});
+
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
