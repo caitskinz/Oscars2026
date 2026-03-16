@@ -1,751 +1,901 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>🎬 Oscars Picks 🎬</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        body {
-            background-color: black;
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-        }
+      body {
+        background-color: black;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+      }
 
-        main {
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+      main {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
 
-        h1 {
-            display: flex;
-            text-align: center;
-            justify-content: center;
-            color: white;
-        }
+      h1 {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        color: white;
+      }
 
+      form {
+        background-color: white;
+        padding: 25px;
+        margin: 20px auto;
+        border-radius: 5px;
+        border: 2px solid #c19d53;
+        width: 100%;
+        /* full width on mobile */
+        max-width: 550px;
+        /* prevents it getting too wide on desktop */
+        box-shadow: 0px 0px 20px #c19d53;
+        overflow: hidden;
+      }
+
+      input {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        height: 30px;
+        margin: auto;
+        border-radius: 5px;
+        border: 1px solid #c19d53;
+      }
+
+      select {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 100;
+        height: 35px;
+        margin: auto;
+        border-radius: 5px;
+        border: 1px solid #c19d53;
+      }
+
+      .category {
+        margin-bottom: 7px;
+        margin-top: 0;
+        font-size: 1.1rem;
+        border-bottom: 1px solid #c19d53;
+        padding-bottom: 3px;
+      }
+
+      button {
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        font-weight: bold;
+        border: solid 2px #c19d53;
+        background: linear-gradient(
+          145deg,
+          #e0aa3e 0%,
+          #f9f295 40%,
+          #e0aa3e 80%,
+          #b88a44 100%
+        );
+      }
+
+      button:active {
+        background: #000000;
+        color: #c19d53;
+      }
+
+      /* modal styles */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        /* hidden by default */
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal {
+        color: white;
+        background: black;
+        padding: 1.5rem 2rem;
+        border: 2px solid #c19d53;
+        border-radius: 8px;
+        max-width: 400px;
+        width: 90%;
+
+        max-height: 90vh;
+        /* prevents modal exceeding screen */
+        overflow-y: auto;
+        /* allows scrolling inside */
+
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      }
+
+      .modal button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        border: solid 1px black;
+        cursor: pointer;
+      }
+
+      .modal button:active {
+        background-color: #c19d53;
+      }
+      #leaderboard-section {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+      }
+
+      #leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: black;
+        color: white;
+        border: 2px solid #c19d53;
+      }
+
+      #leaderboard-table th,
+      #leaderboard-table td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #c19d53;
+      }
+
+      #leaderboard-table th {
+        background: #111;
+      }
+
+      #leaderboard-table tr:nth-child(even) {
+        background: #1a1a1a;
+      }
+
+      @media (max-width: 600px) {
         form {
-            background-color: white;
-            padding: 25px;
-            margin: 20px auto;
-            border-radius: 5px;
-            border: 2px solid #c19d53;
-            width: 100%;
-            /* full width on mobile */
-            max-width: 550px;
-            /* prevents it getting too wide on desktop */
-            box-shadow: 0px 0px 20px #c19d53;
-            overflow: hidden;
+          width: 95%;
+          padding: 20px;
+          border-width: 1px;
         }
 
-        input {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 100%;
-            height: 30px;
-            margin: auto;
-            border-radius: 5px;
-            border: 1px solid #c19d53;
-
-        }
-
+        input,
         select {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 100;
-            height: 35px;
-            margin: auto;
-            border-radius: 5px;
-            border: 1px solid #c19d53;
-        }
-
-        .category {
-            margin-bottom: 7px;
-            margin-top: 0;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #c19d53;
-            padding-bottom: 3px;
+          height: 40px;
+          font-size: 1rem;
         }
 
         button {
-            width: 100%;
-            height: 50px;
-            border-radius: 5px;
-            font-weight: bold;
-            border: solid 2px #c19d53;
-            background: linear-gradient(145deg,
-                    #e0aa3e 0%,
-                    #f9f295 40%,
-                    #e0aa3e 80%,
-                    #b88a44 100%);
+          height: 55px;
+          font-size: 1.1rem;
         }
+      }
 
-        button:active {
-            background: #000000;
-            color: #c19d53;
-        }
+      .podium {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 10px;
+        margin: 1.5rem 0;
+      }
 
-        /* modal styles */
-        .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            /* hidden by default */
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
+      .podium-spot {
+        width: 100px;
+        background: linear-gradient(
+          145deg,
+          #e0aa3e 0%,
+          #f9f295 40%,
+          #e0aa3e 80%,
+          #b88a44 100%
+        );
+        border: 2px solid #c19d53;
+        border-radius: 8px 8px 0 0;
+        text-align: center;
+        padding: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      }
 
-        .modal {
-            color: white;
-            background: black;
-            padding: 1.5rem 2rem;
-            border: 2px solid #c19d53;
-            border-radius: 8px;
-            max-width: 400px;
-            width: 90%;
+      .podium-spot.first {
+        height: 160px;
+      }
 
-            max-height: 90vh;
-            /* prevents modal exceeding screen */
-            overflow-y: auto;
-            /* allows scrolling inside */
+      .podium-spot.second {
+        height: 120px;
+      }
 
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        }
+      .podium-spot.third {
+        height: 100px;
+      }
 
-        .modal button {
-            margin-top: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            border: solid 1px black;
-            cursor: pointer;
-        }
+      .medal {
+        font-size: 1.6rem;
+      }
 
-        .modal button:active {
-            background-color: #c19d53;
-        }
+      .name {
+        font-weight: bold;
+        margin-top: 0.25rem;
+        font-size: 0.95rem;
+        color: black;
+      }
 
-        @media (max-width: 600px) {
-            form {
-                width: 95%;
-                padding: 20px;
-                border-width: 1px;
-            }
+      .score {
+        font-size: 0.85rem;
+        opacity: 0.85;
+        color: black;
+      }
 
-            input,
-            select {
-                height: 40px;
-                font-size: 1rem;
-            }
-
-            button {
-                height: 55px;
-                font-size: 1.1rem;
-            }
-        }
-
+      @media (max-width: 480px) {
         .podium {
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 10px;
-            margin: 1.5rem 0;
+          gap: 6px;
         }
 
         .podium-spot {
-            width: 100px;
-            background: linear-gradient(145deg,
-                    #e0aa3e 0%,
-                    #f9f295 40%,
-                    #e0aa3e 80%,
-                    #b88a44 100%);
-            border: 2px solid #c19d53;
-            border-radius: 8px 8px 0 0;
-            text-align: center;
-            padding: 0.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+          width: 85px;
         }
-
-        .podium-spot.first {
-            height: 160px;
-        }
-
-        .podium-spot.second {
-            height: 120px;
-        }
-
-        .podium-spot.third {
-            height: 100px;
-        }
-
-        .medal {
-            font-size: 1.6rem;
-        }
-
-        .name {
-            font-weight: bold;
-            margin-top: 0.25rem;
-            font-size: 0.95rem;
-            color: black;
-        }
-
-        .score {
-            font-size: 0.85rem;
-            opacity: 0.85;
-            color: black;
-        }
-
-        @media (max-width: 480px) {
-            .podium {
-                gap: 6px;
-            }
-
-            .podium-spot {
-                width: 85px;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <header>
-            <h1>🎬 Oscars Picks 🎬</h1>
-        </header>
+      <header>
+        <h1>🎬 Oscars Picks 🎬</h1>
+      </header>
 
-        <form id="picks-form">
-            <label for="name">
-                <p class="category">Your name</p>
-                <input type="text" name="name" required placeholder="who are u?" disabled/>
-            </label>
-            <br />
+      <form id="picks-form">
+        <label for="name">
+          <p class="category">Your name</p>
+          <input
+            type="text"
+            name="name"
+            required
+            placeholder="who are u?"
+            disabled
+          />
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Picture</p>
+        <label>
+          <p class="category">Best Picture</p>
 
-                <p>Choose with your brain 🧠</p>
-                <select name="bestPictureWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Bugonia">Bugonia</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="F1">F1</option>
-                    <option value="Hamnet">Hamnet</option>
-                    <option value="Marty Supreme">Marty Supreme</option>
-                    <option value="One Battle After Another">One Battle After Another</option>
-                    <option value="The Secret Agent">The Secret Agent</option>
-                    <option value="Sentimental Value">Sentimental Value</option>
-                    <option value="Sinners">Sinners</option>
-                    <option value="Train Dreams">Train Dreams</option>
-                </select>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestPictureWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Bugonia">Bugonia</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="F1">F1</option>
+            <option value="Hamnet">Hamnet</option>
+            <option value="Marty Supreme">Marty Supreme</option>
+            <option value="One Battle After Another">
+              One Battle After Another
+            </option>
+            <option value="The Secret Agent">The Secret Agent</option>
+            <option value="Sentimental Value">Sentimental Value</option>
+            <option value="Sinners">Sinners</option>
+            <option value="Train Dreams">Train Dreams</option>
+          </select>
 
-                <p>Choose with your heart 💖</p>
-                <select name="bestPictureFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Bugonia">Bugonia</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="F1">F1</option>
-                    <option value="Hamnet">Hamnet</option>
-                    <option value="Marty Supreme">Marty Supreme</option>
-                    <option value="One Battle After Another">One Battle After Another</option>
-                    <option value="The Secret Agent">The Secret Agent</option>
-                    <option value="Sentimental Value">Sentimental Value</option>
-                    <option value="Sinners">Sinners</option>
-                    <option value="Train Dreams">Train Dreams</option>
-                </select>
-            </label>
-            <br />
+          <p>Choose with your heart 💖</p>
+          <select name="bestPictureFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Bugonia">Bugonia</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="F1">F1</option>
+            <option value="Hamnet">Hamnet</option>
+            <option value="Marty Supreme">Marty Supreme</option>
+            <option value="One Battle After Another">
+              One Battle After Another
+            </option>
+            <option value="The Secret Agent">The Secret Agent</option>
+            <option value="Sentimental Value">Sentimental Value</option>
+            <option value="Sinners">Sinners</option>
+            <option value="Train Dreams">Train Dreams</option>
+          </select>
+        </label>
+        <br />
 
+        <label>
+          <p class="category">Best Actor</p>
 
-            <label>
-                <p class="category">Best Actor</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestActorWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Timothee Chalamet">
+              Timothée Chalamet - Marty Supreme
+            </option>
+            <option value="Leonardo DiCaprio">
+              Leonardo DiCaprio - One Battle After Another
+            </option>
+            <option value="Ethan Hawke">Ethan Hawke - Blue Moon</option>
+            <option value="Michael B Jordan">Michael B Jordan - Sinners</option>
+            <option value="Wagner Moura">
+              Wagner Moura - The Secret Agent
+            </option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestActorFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Timothee Chalamet">
+              Timothée Chalamet - Marty Supreme
+            </option>
+            <option value="Leonardo DiCaprio">
+              Leonardo DiCaprio - One Battle After Another
+            </option>
+            <option value="Ethan Hawke">Ethan Hawke - Blue Moon</option>
+            <option value="Michael B Jordan">Michael B Jordan - Sinners</option>
+            <option value="Wagner Moura">
+              Wagner Moura - The Secret Agent
+            </option>
+          </select>
+        </label>
+        <br />
 
-                <p>Choose with your brain 🧠</p>
-                <select name="bestActorWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Timothee Chalamet">Timothée Chalamet - Marty Supreme</option>
-                    <option value="Leonardo DiCaprio">Leonardo DiCaprio - One Battle After Another</option>
-                    <option value="Ethan Hawke">Ethan Hawke - Blue Moon</option>
-                    <option value="Michael B Jordan">Michael B Jordan - Sinners</option>
-                    <option value="Wagner Moura">Wagner Moura - The Secret Agent</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestActorFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Timothee Chalamet">Timothée Chalamet - Marty Supreme</option>
-                    <option value="Leonardo DiCaprio">Leonardo DiCaprio - One Battle After Another</option>
-                    <option value="Ethan Hawke">Ethan Hawke - Blue Moon</option>
-                    <option value="Michael B Jordan">Michael B Jordan - Sinners</option>
-                    <option value="Wagner Moura">Wagner Moura - The Secret Agent</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Actress</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestActressWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Jessie Buckley">Jessie Buckley - Hamnet</option>
+            <option value="Rose Byrne">
+              Rose Byrne - If I Had Legs I'd Kick You
+            </option>
+            <option value="Kate Hudson">Kate Hudson - Song Sung Blue</option>
+            <option value="Renate Reinsve">
+              Renate Reinsve - Sentimental Value
+            </option>
+            <option value="Emma Stone">Emma Stone - Bugonia</option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestActressFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Jessie Buckley">Jessie Buckley - Hamnet</option>
+            <option value="Rose Byrne">
+              Rose Byrne - If I Had Legs I'd Kick You
+            </option>
+            <option value="Kate Hudson">Kate Hudson - Song Sung Blue</option>
+            <option value="Renate Reinsve">
+              Renate Reinsve - Sentimental Value
+            </option>
+            <option value="Emma Stone">Emma Stone - Bugonia</option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Actress</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestActressWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Jessie Buckley">Jessie Buckley - Hamnet</option>
-                    <option value="Rose Byrne">Rose Byrne - If I Had Legs I'd Kick You</option>
-                    <option value="Kate Hudson">Kate Hudson - Song Sung Blue</option>
-                    <option value="Renate Reinsve">Renate Reinsve - Sentimental Value</option>
-                    <option value="Emma Stone">Emma Stone - Bugonia</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestActressFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Jessie Buckley">Jessie Buckley - Hamnet</option>
-                    <option value="Rose Byrne">Rose Byrne - If I Had Legs I'd Kick You</option>
-                    <option value="Kate Hudson">Kate Hudson - Song Sung Blue</option>
-                    <option value="Renate Reinsve">Renate Reinsve - Sentimental Value</option>
-                    <option value="Emma Stone">Emma Stone - Bugonia</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Director</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestDirectorWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Paul Thomas Anderson">
+              Paul Thomas Anderson - One Battle After Another
+            </option>
+            <option value="Ryan Coogler">Ryan Coogler - Sinners</option>
+            <option value="Josh Safdie">Josh Safdie - Marty Supreme</option>
+            <option value="Joachim Trier">
+              Joachim Trier - Sentimental Value
+            </option>
+            <option value="Chloé Zhao">Chloé Zhao - Hamnet</option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestDirectorFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Paul Thomas Anderson">
+              Paul Thomas Anderson - One Battle After Another
+            </option>
+            <option value="Ryan Coogler">Ryan Coogler - Sinners</option>
+            <option value="Josh Safdie">Josh Safdie - Marty Supreme</option>
+            <option value="Joachim Trier">
+              Joachim Trier - Sentimental Value
+            </option>
+            <option value="Chloé Zhao">Chloé Zhao - Hamnet</option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Director</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestDirectorWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Paul Thomas Anderson">Paul Thomas Anderson - One Battle After Another</option>
-                    <option value="Ryan Coogler">Ryan Coogler - Sinners</option>
-                    <option value="Josh Safdie">Josh Safdie - Marty Supreme</option>
-                    <option value="Joachim Trier">Joachim Trier - Sentimental Value</option>
-                    <option value="Chloé Zhao">Chloé Zhao - Hamnet</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestDirectorFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Paul Thomas Anderson">Paul Thomas Anderson - One Battle After Another</option>
-                    <option value="Ryan Coogler">Ryan Coogler - Sinners</option>
-                    <option value="Josh Safdie">Josh Safdie - Marty Supreme</option>
-                    <option value="Joachim Trier">Joachim Trier - Sentimental Value</option>
-                    <option value="Chloé Zhao">Chloé Zhao - Hamnet</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Supporting Actor</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestSupportingActorWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Benicio del Toro">
+              Benicio del Toro - One Battle After Another
+            </option>
+            <option value="Jacob Elordi">Jacob Elordi - Frankenstein</option>
+            <option value="Delroy Lindo">Delroy Lindo - Sinners</option>
+            <option value="Sean Penn">
+              Sean Penn - One Battle After Another
+            </option>
+            <option value="Stellan Skarsgård">
+              Stellan Skarsgård - Sentimental Value
+            </option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestSupportingActorFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Benicio del Toro">
+              Benicio del Toro - One Battle After Another
+            </option>
+            <option value="Jacob Elordi">Jacob Elordi - Frankenstein</option>
+            <option value="Delroy Lindo">Delroy Lindo - Sinners</option>
+            <option value="Sean Penn">
+              Sean Penn - One Battle After Another
+            </option>
+            <option value="Stellan Skarsgård">
+              Stellan Skarsgård - Sentimental Value
+            </option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Supporting Actor</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestSupportingActorWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Benicio del Toro">Benicio del Toro - One Battle After Another</option>
-                    <option value="Jacob Elordi">Jacob Elordi - Frankenstein</option>
-                    <option value="Delroy Lindo">Delroy Lindo - Sinners</option>
-                    <option value="Sean Penn">Sean Penn - One Battle After Another</option>
-                    <option value="Stellan Skarsgård">Stellan Skarsgård - Sentimental Value</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestSupportingActorFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Benicio del Toro">Benicio del Toro - One Battle After Another</option>
-                    <option value="Jacob Elordi">Jacob Elordi - Frankenstein</option>
-                    <option value="Delroy Lindo">Delroy Lindo - Sinners</option>
-                    <option value="Sean Penn">Sean Penn - One Battle After Another</option>
-                    <option value="Stellan Skarsgård">Stellan Skarsgård - Sentimental Value</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Supporting Actress</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestSupportingActressWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Elle Fanning">
+              Elle Fanning - Sentimental Value
+            </option>
+            <option value="Inga Ibsdotter Lilleaas">
+              Inga Ibsdotter Lilleaas - Sentimental Value
+            </option>
+            <option value="Amy Madigan">Amy Madigan - Weapons</option>
+            <option value="Wunmi Mosaku">Wunmi Mosaku - Sinners</option>
+            <option value="Teyana Taylor">
+              Teyana Taylor - One Battle After Another
+            </option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestSupportingActressFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Elle Fanning">
+              Elle Fanning - Sentimental Value
+            </option>
+            <option value="Inga Ibsdotter Lilleaas">
+              Inga Ibsdotter Lilleaas - Sentimental Value
+            </option>
+            <option value="Amy Madigan">Amy Madigan - Weapons</option>
+            <option value="Wunmi Mosaku">Wunmi Mosaku - Sinners</option>
+            <option value="Teyana Taylor">
+              Teyana Taylor - One Battle After Another
+            </option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Supporting Actress</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestSupportingActressWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Elle Fanning">Elle Fanning - Sentimental Value</option>
-                    <option value="Inga Ibsdotter Lilleaas">Inga Ibsdotter Lilleaas - Sentimental Value</option>
-                    <option value="Amy Madigan">Amy Madigan - Weapons</option>
-                    <option value="Wunmi Mosaku">Wunmi Mosaku - Sinners</option>
-                    <option value="Teyana Taylor">Teyana Taylor - One Battle After Another</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestSupportingActressFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Elle Fanning">Elle Fanning - Sentimental Value</option>
-                    <option value="Inga Ibsdotter Lilleaas">Inga Ibsdotter Lilleaas - Sentimental Value</option>
-                    <option value="Amy Madigan">Amy Madigan - Weapons</option>
-                    <option value="Wunmi Mosaku">Wunmi Mosaku - Sinners</option>
-                    <option value="Teyana Taylor">Teyana Taylor - One Battle After Another</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Animated Feature</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestAnimatedWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Arco">Arco</option>
+            <option value="Elio">Elio</option>
+            <option value="KPop Demon Hunters">KPop Demon Hunters</option>
+            <option value="Little Amélie or the Character of Rain">
+              Little Amélie or the Character of Rain
+            </option>
+            <option value="Zootopia 2">Zootopia 2</option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestAnimatedFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Arco">Arco</option>
+            <option value="Elio">Elio</option>
+            <option value="KPop Demon Hunters">KPop Demon Hunters</option>
+            <option value="Little Amélie or the Character of Rain">
+              Little Amélie or the Character of Rain
+            </option>
+            <option value="Zootopia 2">Zootopia 2</option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Animated Feature</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestAnimatedWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Arco">Arco</option>
-                    <option value="Elio">Elio</option>
-                    <option value="KPop Demon Hunters">KPop Demon Hunters</option>
-                    <option value="Little Amélie or the Character of Rain">Little Amélie or the Character of Rain
-                    </option>
-                    <option value="Zootopia 2">Zootopia 2</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestAnimatedFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Arco">Arco</option>
-                    <option value="Elio">Elio</option>
-                    <option value="KPop Demon Hunters">KPop Demon Hunters</option>
-                    <option value="Little Amélie or the Character of Rain">Little Amélie or the Character of Rain
-                    </option>
-                    <option value="Zootopia 2">Zootopia 2</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Cinematography</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestCinematographyWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="Marty Supreme">Marty Supreme</option>
+            <option value="One Battle After Another">
+              One Battle After Another
+            </option>
+            <option value="Sinners">Sinners</option>
+            <option value="Train Dreams">Train Dreams</option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestCinematographyFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="Marty Supreme">Marty Supreme</option>
+            <option value="One Battle After Another">
+              One Battle After Another
+            </option>
+            <option value="Sinners">Sinners</option>
+            <option value="Train Dreams">Train Dreams</option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Cinematography</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestCinematographyWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="Marty Supreme">Marty Supreme</option>
-                    <option value="One Battle After Another">One Battle After Another</option>
-                    <option value="Sinners">Sinners</option>
-                    <option value="Train Dreams">Train Dreams</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestCinematographyFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="Marty Supreme">Marty Supreme</option>
-                    <option value="One Battle After Another">One Battle After Another</option>
-                    <option value="Sinners">Sinners</option>
-                    <option value="Train Dreams">Train Dreams</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Costume Design</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestCostumeWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Avatar: Fire and Ash">Avatar: Fire and Ash</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="Hamnet">Hamnet</option>
+            <option value="Marty Supreme">Marty Supreme</option>
+            <option value="Sinners">Sinners</option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestCostumeFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Avatar: Fire and Ash">Avatar: Fire and Ash</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="Hamnet">Hamnet</option>
+            <option value="Marty Supreme">Marty Supreme</option>
+            <option value="Sinners">Sinners</option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Costume Design</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestCostumeWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Avatar: Fire and Ash">Avatar: Fire and Ash</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="Hamnet">Hamnet</option>
-                    <option value="Marty Supreme">Marty Supreme</option>
-                    <option value="Sinners">Sinners</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestCostumeFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Avatar: Fire and Ash">Avatar: Fire and Ash</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="Hamnet">Hamnet</option>
-                    <option value="Marty Supreme">Marty Supreme</option>
-                    <option value="Sinners">Sinners</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best International Feature Film</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestInternationalWill" required disabled>
+            <option value="">Select...</option>
+            <option value="It Was Just an Accident">
+              It Was Just an Accident
+            </option>
+            <option value="Sentimental Value">Sentimental Value</option>
+            <option value="Sirât">Sirât</option>
+            <option value="The Secret Agent">The Secret Agent</option>
+            <option value="The Voice of Hind Rajab">
+              The Voice of Hind Rajab
+            </option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestInternationalFav" required disabled>
+            <option value="">Select...</option>
+            <option value="It Was Just an Accident">
+              It Was Just an Accident
+            </option>
+            <option value="Sentimental Value">Sentimental Value</option>
+            <option value="Sirât">Sirât</option>
+            <option value="The Secret Agent">The Secret Agent</option>
+            <option value="The Voice of Hind Rajab">
+              The Voice of Hind Rajab
+            </option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best International Feature Film</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestInternationalWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="It Was Just an Accident">It Was Just an Accident</option>
-                    <option value="Sentimental Value">Sentimental Value</option>
-                    <option value="Sirât">Sirât</option>
-                    <option value="The Secret Agent">The Secret Agent</option>
-                    <option value="The Voice of Hind Rajab">The Voice of Hind Rajab</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestInternationalFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="It Was Just an Accident">It Was Just an Accident</option>
-                    <option value="Sentimental Value">Sentimental Value</option>
-                    <option value="Sirât">Sirât</option>
-                    <option value="The Secret Agent">The Secret Agent</option>
-                    <option value="The Voice of Hind Rajab">The Voice of Hind Rajab</option>
-                </select>
-            </label>
-            <br />
+        <label>
+          <p class="category">Best Original Score</p>
+          <p>Choose with your brain 🧠</p>
+          <select name="bestScoreWill" required disabled>
+            <option value="">Select...</option>
+            <option value="Bugonia">Bugonia</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="Hamnet">Hamnet</option>
+            <option value="One Battle After Another">
+              One Battle After Another
+            </option>
+            <option value="Sinners">Sinners</option>
+          </select>
+          <p>Choose with your heart 💖</p>
+          <select name="bestScoreFav" required disabled>
+            <option value="">Select...</option>
+            <option value="Bugonia">Bugonia</option>
+            <option value="Frankenstein">Frankenstein</option>
+            <option value="Hamnet">Hamnet</option>
+            <option value="One Battle After Another">
+              One Battle After Another
+            </option>
+            <option value="Sinners">Sinners</option>
+          </select>
+        </label>
+        <br />
 
-            <label>
-                <p class="category">Best Original Score</p>
-                <p>Choose with your brain 🧠</p>
-                <select name="bestScoreWill" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Bugonia">Bugonia</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="Hamnet">Hamnet</option>
-                    <option value="One Battle After Another">One Battle After Another</option>
-                    <option value="Sinners">Sinners</option>
-                </select>
-                <p>Choose with your heart 💖</p>
-                <select name="bestScoreFav" required disabled>
-                    <option value="">Select...</option>
-                    <option value="Bugonia">Bugonia</option>
-                    <option value="Frankenstein">Frankenstein</option>
-                    <option value="Hamnet">Hamnet</option>
-                    <option value="One Battle After Another">One Battle After Another</option>
-                    <option value="Sinners">Sinners</option>
-                </select>
-            </label>
-            <br />
+        <button type="submit" disabled>LOCK IT IN</button>
+      </form>
 
-            <button type="submit" disabled>LOCK IT IN</button>
-        </form>
-
-        <p id="status"></p>
+      <p id="status"></p>
     </main>
 
     <!-- Modal -->
     <div id="thankyou-backdrop" class="modal-backdrop">
-        <div class="modal">
-            <h2>Thank you for your submission! 🎬</h2>
-            <p>Your picks have been recorded.</p>
-            <button id="close-modal-btn">Close</button>
-        </div>
+      <div class="modal">
+        <h2>Thank you for your submission! 🎬</h2>
+        <p>Your picks have been recorded.</p>
+        <button id="close-modal-btn">Close</button>
+      </div>
     </div>
 
     <!-- Instructions Modal -->
     <div id="instructions-backdrop" class="modal-backdrop">
-        <div class="modal">
-            <h2>CEREMONY IN PROGRESS U SNOOZE U LOSE 😴</h2>
-            <p>
-                <b>Step 1:</b> Enter your name<br>
-                <b>Step 2:</b> For each category, pick one with your brain 🧠 (the one you think is most likely to win)
-                and one with your heart 💖 (the one you <b>want</b> to win)<br>
-                <b>Step 3:</b> Hit “LOCK IT IN” once you’re done<br>
-                ✨ Last day to submit is <b>Sunday 15 March</b> ✨
-            </p>
+      <div class="modal">
+        <h2>CEREMONY IN PROGRESS U SNOOZE U LOSE 😴</h2>
+        <p>
+          <b>Step 1:</b> Enter your name<br />
+          <b>Step 2:</b> For each category, pick one with your brain 🧠 (the one
+          you think is most likely to win) and one with your heart 💖 (the one
+          you <b>want</b> to win)<br />
+          <b>Step 3:</b> Hit “LOCK IT IN” once you’re done<br />
+          ✨ Last day to submit is <b>Sunday 15 March</b> ✨
+        </p>
 
-            <h2>How do the points work? 🤔</h2>
-            <p>
-                🧠 Brain Choice Correct = 2 Points<br>
-                💖 Heart Choice Correct = 1 Point
-            </p>
+        <h2>How do the points work? 🤔</h2>
+        <p>
+          🧠 Brain Choice Correct = 2 Points<br />
+          💖 Heart Choice Correct = 1 Point
+        </p>
 
-            <h2>JUST SO YOU KNOW!!!</h2>
-            <p>
-                You can only submit this form once, so make sure you're ready to make all your choices before you
-                submit.
-            </p>
+        <h2>JUST SO YOU KNOW!!!</h2>
+        <p>
+          You can only submit this form once, so make sure you're ready to make
+          all your choices before you submit.
+        </p>
 
-            <button id="close-instructions-btn">Close ✅</button>
-        </div>
+        <button id="close-instructions-btn">Close ✅</button>
+      </div>
     </div>
 
     <div id="top3-backdrop" class="modal-backdrop">
-        <div class="modal">
-            <h2>and the winner is.....🏆</h2>
+      <div class="modal">
+        <h2>and the winner is.....🏆</h2>
 
-            <div class="podium">
-                <div class="podium-spot second">
-                    <div class="medal">🥈</div>
-                    <div class="name" id="second-name"></div>
-                    <div class="score" id="second-score"></div>
-                </div>
+        <div class="podium">
+          <div class="podium-spot second">
+            <div class="medal">🥈</div>
+            <div class="name" id="second-name"></div>
+            <div class="score" id="second-score"></div>
+          </div>
 
-                <div class="podium-spot first">
-                    <div class="medal">🥇</div>
-                    <div class="name" id="first-name"></div>
-                    <div class="score" id="first-score"></div>
-                </div>
+          <div class="podium-spot first">
+            <div class="medal">🥇</div>
+            <div class="name" id="first-name"></div>
+            <div class="score" id="first-score"></div>
+          </div>
 
-                <div class="podium-spot third">
-                    <div class="medal">🥉</div>
-                    <div class="name" id="third-name"></div>
-                    <div class="score" id="third-score"></div>
-                </div>
-            </div>
-
-            <button id="close-top3-btn">slay 💅</button>
+          <div class="podium-spot third">
+            <div class="medal">🥉</div>
+            <div class="name" id="third-name"></div>
+            <div class="score" id="third-score"></div>
+          </div>
         </div>
-    </div>
+        <section id="leaderboard-section">
+          <h2 style="color: white; text-align: center">Full Results</h2>
 
+          <table id="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </section>
+
+        <button id="close-top3-btn">slay 💅</button>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        // ====== CONFIG ======
-        const scriptURL =
-            "https://script.google.com/macros/s/AKfycbyiJkCCnU-cq1pIYfZthMUexZBr9tVeATfGvq0lUjIeI3Gkvt9lCMEXINYYmp3C-MrN/exec";
+      // ====== CONFIG ======
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbzRotO4eSeeI671EZj3y0JyCwMWWIsmfFgmB4ccbcs31paxVeBGeZC_ECGEgibQB6yfFw/exec";
 
-        // ====== ELEMENTS ======
-        const form = document.getElementById("picks-form");
-        const statusEl = document.getElementById("status");
+      // ====== ELEMENTS ======
+      const form = document.getElementById("picks-form");
+      const statusEl = document.getElementById("status");
 
-        // Thank-you modal
-        const thankyouBackdrop = document.getElementById("thankyou-backdrop");
-        const closeThankyouBtn = document.getElementById("close-modal-btn");
+      // Thank-you modal
+      const thankyouBackdrop = document.getElementById("thankyou-backdrop");
+      const closeThankyouBtn = document.getElementById("close-modal-btn");
 
-        // Instructions modal
-        const instructionsBackdrop = document.getElementById("instructions-backdrop");
-        const closeInstructionsBtn = document.getElementById("close-instructions-btn");
+      // Instructions modal
+      const instructionsBackdrop = document.getElementById(
+        "instructions-backdrop",
+      );
+      const closeInstructionsBtn = document.getElementById(
+        "close-instructions-btn",
+      );
 
-        // Top 3 podium modal
-        const top3Backdrop = document.getElementById("top3-backdrop");
-        const closeTop3Btn = document.getElementById("close-top3-btn");
+      // Top 3 podium modal
+      const top3Backdrop = document.getElementById("top3-backdrop");
+      const closeTop3Btn = document.getElementById("close-top3-btn");
 
-        // ====== MODAL HELPERS ======
-        function openThankyou() {
-            thankyouBackdrop.style.display = "flex";
-        }
-        function closeThankyou() {
-            thankyouBackdrop.style.display = "none";
-        }
+      // ====== MODAL HELPERS ======
+      function openThankyou() {
+        thankyouBackdrop.style.display = "flex";
+      }
+      function closeThankyou() {
+        thankyouBackdrop.style.display = "none";
+      }
 
-        function openInstructions() {
-            instructionsBackdrop.style.display = "flex";
-        }
-        function closeInstructions() {
-            instructionsBackdrop.style.display = "none";
-        }
+      function openInstructions() {
+        instructionsBackdrop.style.display = "flex";
+      }
+      function closeInstructions() {
+        instructionsBackdrop.style.display = "none";
+      }
 
-        function openTop3() {
-            top3Backdrop.style.display = "flex";
-            fireConfetti();
-        }
+      function openTop3() {
+        top3Backdrop.style.display = "flex";
+        fireConfetti();
+      }
 
-        function closeTop3() {
-            top3Backdrop.style.display = "none";
-        }
+      function closeTop3() {
+        top3Backdrop.style.display = "none";
+      }
 
-        function fireConfetti() {
-            const duration = 2.5 * 1000;
-            const end = Date.now() + duration;
+      function fireConfetti() {
+        const duration = 2.5 * 1000;
+        const end = Date.now() + duration;
 
-            (function frame() {
-                confetti({
-                    particleCount: 6,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ["#f9f295", "#e0aa3e", "#c19d53", "#ffffff"]
-                });
+        (function frame() {
+          confetti({
+            particleCount: 6,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ["#f9f295", "#e0aa3e", "#c19d53", "#ffffff"],
+          });
 
-                confetti({
-                    particleCount: 6,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ["#f9f295", "#e0aa3e", "#c19d53", "#ffffff"]
-                });
+          confetti({
+            particleCount: 6,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ["#f9f295", "#e0aa3e", "#c19d53", "#ffffff"],
+          });
 
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            })();
-        }
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+      }
 
+      // ====== MODAL EVENTS ======
+      closeThankyouBtn.addEventListener("click", closeThankyou);
+      thankyouBackdrop.addEventListener("click", (e) => {
+        if (e.target === thankyouBackdrop) closeThankyou();
+      });
 
-        // ====== MODAL EVENTS ======
-        closeThankyouBtn.addEventListener("click", closeThankyou);
-        thankyouBackdrop.addEventListener("click", (e) => {
-            if (e.target === thankyouBackdrop) closeThankyou();
+      closeInstructionsBtn.addEventListener("click", closeInstructions);
+      instructionsBackdrop.addEventListener("click", (e) => {
+        if (e.target === instructionsBackdrop) closeInstructions();
+      });
+
+      closeTop3Btn.addEventListener("click", closeTop3);
+      top3Backdrop.addEventListener("click", (e) => {
+        if (e.target === top3Backdrop) closeTop3();
+      });
+
+      // ====== PODIUM RENDERING ======
+      function renderPodium(top3) {
+        // expected: [{name:"...", score: 12}, {..}, {..}]
+        const slots = [
+          { slot: "first", data: top3?.[0] },
+          { slot: "second", data: top3?.[1] },
+          { slot: "third", data: top3?.[2] },
+        ];
+
+        slots.forEach(({ slot, data }) => {
+          const nameEl = document.getElementById(`${slot}-name`);
+          const scoreEl = document.getElementById(`${slot}-score`);
+
+          if (!nameEl || !scoreEl) return;
+
+          if (data) {
+            nameEl.textContent = data.name ?? "—";
+            // Your sheet "Score" is weighted points, so call them points:
+            scoreEl.textContent =
+              typeof data.score === "number"
+                ? `${data.score} points`
+                : `${data.score ?? 0} points`;
+          } else {
+            nameEl.textContent = "—";
+            scoreEl.textContent = "";
+          }
         });
+      }
+      function renderLeaderboard(players) {
+        const body = document.getElementById("leaderboard-body");
+        body.innerHTML = "";
 
-        closeInstructionsBtn.addEventListener("click", closeInstructions);
-        instructionsBackdrop.addEventListener("click", (e) => {
-            if (e.target === instructionsBackdrop) closeInstructions();
+        players.forEach((player, index) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${player.name}</td>
+            <td>${player.score}</td>
+        `;
+          if (index === 0) row.style.background = "#3a2c00";
+          if (index === 1) row.style.background = "#2a2a2a";
+          if (index === 2) row.style.background = "#332200";
+
+          body.appendChild(row);
         });
+      }
 
-        closeTop3Btn.addEventListener("click", closeTop3);
-        top3Backdrop.addEventListener("click", (e) => {
-            if (e.target === top3Backdrop) closeTop3();
-        });
+      // ====== FETCH TOP 3 (from Apps Script doGet?action=top3) ======
+      async function checkTop3() {
+        try {
+          const res = await fetch(`${scriptURL}?action=top3`, {
+            method: "GET",
+          });
+          const data = await res.json();
 
-        // ====== PODIUM RENDERING ======
-        function renderPodium(top3) {
-            // expected: [{name:"...", score: 12}, {..}, {..}]
-            const slots = [
-                { slot: "first", data: top3?.[0] },
-                { slot: "second", data: top3?.[1] },
-                { slot: "third", data: top3?.[2] },
-            ];
+          if (!data?.published) return false;
 
-            slots.forEach(({ slot, data }) => {
-                const nameEl = document.getElementById(`${slot}-name`);
-                const scoreEl = document.getElementById(`${slot}-score`);
+          if (Array.isArray(data.top3)) {
+            renderPodium(data.top3);
+            openTop3();
+          }
 
-                if (!nameEl || !scoreEl) return;
+          if (Array.isArray(data.leaderboard)) {
+            renderLeaderboard(data.leaderboard);
+          }
 
-                if (data) {
-                    nameEl.textContent = data.name ?? "—";
-                    // Your sheet "Score" is weighted points, so call them points:
-                    scoreEl.textContent =
-                        typeof data.score === "number"
-                            ? `${data.score} points`
-                            : `${data.score ?? 0} points`;
-                } else {
-                    nameEl.textContent = "—";
-                    scoreEl.textContent = "";
-                }
-            });
+          return true;
+        } catch (err) {
+          console.error("Failed to load leaderboard", err);
+          return false;
         }
+      }
 
-        // ====== FETCH TOP 3 (from Apps Script doGet?action=top3) ======
-        async function checkTop3() {
-            try {
-                const res = await fetch(`${scriptURL}?action=top3`, { method: "GET" });
-                const data = await res.json();
+      // ====== FORM SUBMIT (POST to Apps Script) ======
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        statusEl.textContent = "Submitting...";
 
-                if (!data?.published) return false;
-                if (!Array.isArray(data.top3)) return false;
+        const formData = new FormData(form);
+        const body = new URLSearchParams(formData);
 
-                renderPodium(data.top3);
-                openTop3();
-                return true;
-            } catch (err) {
-                console.error("Failed to load top 3", err);
-                return false;
-            }
+        try {
+          const response = await fetch(scriptURL, {
+            method: "POST",
+            body: body,
+          });
+
+          if (!response.ok) throw new Error("Network response was not ok");
+
+          statusEl.textContent = "";
+          form.reset();
+          openThankyou();
+        } catch (err) {
+          console.error(err);
+          statusEl.textContent = "Oops, something went wrong. Try again?";
         }
+      });
 
-        // ====== FORM SUBMIT (POST to Apps Script) ======
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            statusEl.textContent = "Submitting...";
-
-            const formData = new FormData(form);
-            const body = new URLSearchParams(formData);
-
-            try {
-                const response = await fetch(scriptURL, {
-                    method: "POST",
-                    body: body,
-                });
-
-                if (!response.ok) throw new Error("Network response was not ok");
-
-                statusEl.textContent = "";
-                form.reset();
-                openThankyou();
-            } catch (err) {
-                console.error(err);
-                statusEl.textContent = "Oops, something went wrong. Try again?";
-            }
-        });
-
-        // ====== ON PAGE LOAD ======
-        window.addEventListener("load", async () => {
-            const winnersShown = await checkTop3();
-            if (!winnersShown) openInstructions();
-        });
-
-
+      // ====== ON PAGE LOAD ======
+      window.addEventListener("load", async () => {
+        const winnersShown = await checkTop3();
+        if (!winnersShown) openInstructions();
+      });
     </script>
-</body>
-
+  </body>
 </html>
