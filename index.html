@@ -138,53 +138,6 @@
       .modal button:active {
         background-color: #c19d53;
       }
-      #leaderboard-section {
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 20px;
-      }
-
-      #leaderboard-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: black;
-        color: white;
-        border: 2px solid #c19d53;
-      }
-
-      #leaderboard-table th,
-      #leaderboard-table td {
-        padding: 10px;
-        text-align: center;
-        border-bottom: 1px solid #c19d53;
-      }
-
-      #leaderboard-table th {
-        background: #111;
-      }
-
-      #leaderboard-table tr:nth-child(even) {
-        background: #1a1a1a;
-      }
-
-      @media (max-width: 600px) {
-        form {
-          width: 95%;
-          padding: 20px;
-          border-width: 1px;
-        }
-
-        input,
-        select {
-          height: 40px;
-          font-size: 1rem;
-        }
-
-        button {
-          height: 55px;
-          font-size: 1.1rem;
-        }
-      }
 
       .podium {
         display: flex;
@@ -237,6 +190,54 @@
         font-size: 0.85rem;
         opacity: 0.85;
         color: black;
+      }
+
+      #leaderboard-section {
+        max-width: 600px;
+        margin: 0;
+        padding: 5px;
+      }
+
+      #leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: black;
+        color: white;
+        border: 2px solid #c19d53;
+      }
+
+      #leaderboard-table th,
+      #leaderboard-table td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #c19d53;
+      }
+
+      #leaderboard-table th {
+        background: #111;
+      }
+
+      #leaderboard-table tr:nth-child(even) {
+        background: #1a1a1a;
+      }
+
+      @media (max-width: 600px) {
+        form {
+          width: 95%;
+          padding: 20px;
+          border-width: 1px;
+        }
+
+        input,
+        select {
+          height: 40px;
+          font-size: 1rem;
+        }
+
+        button {
+          height: 55px;
+          font-size: 1.1rem;
+        }
       }
 
       @media (max-width: 480px) {
@@ -681,7 +682,6 @@
         </div>
         <section id="leaderboard-section">
           <h2 style="color: white; text-align: center">Full Results</h2>
-
           <table id="leaderboard-table">
             <thead>
               <tr>
